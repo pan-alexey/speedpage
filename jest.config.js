@@ -2,7 +2,6 @@
 module.exports = {
   roots: [
     '<rootDir>/src',
-    '<rootDir>/tests/e2e',
   ],
   modulePathIgnorePatterns: ['<rootDir>/tests/package'],
   transform: {

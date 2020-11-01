@@ -1,7 +1,6 @@
 /* eslint-disable filenames/match-regex */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -14,14 +13,20 @@ module.exports = {
     extensions: ['.ts', '.js'],
   },
   output: {
-    path: path.resolve(__dirname, './dist/'),
+    path: path.resolve(__dirname, './build/'),
     filename: 'index.js',
   },
-  node: {
-    process: false,
-  },
+  // node: {
+  //   process: false,
+  // },
   module: {
     rules: [
+      {
+        enforce: 'pre',
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+      },
       {
         test: /\.ts$/,
         use: [
@@ -29,22 +34,13 @@ module.exports = {
             loader: 'ts-loader',
             options: {
               compilerOptions: {
-                declaration: true,
-                // outDir: 'dist/types',
+                // declaration: true, // for compile d.ts
               },
             },
           },
-          // -------------------------//
-          {
-            loader: 'eslint-loader',
-          },
-          // -------------------------//
         ],
       },
     ],
   },
-  // devtool: 'source-map',
-  plugins: [
-    new CleanWebpackPlugin(),
-  ],
+  devtool: 'source-map',
 };

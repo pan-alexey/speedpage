@@ -38,6 +38,12 @@ module.exports =  {
     'comma-dangle': ['warn', 'always-multiline'],
     'no-undef': 'warn',
     'no-unused-vars': 'warn',
-    'filenames/match-regex': [2, ['^([a-z][a-z0-9]*)(-[a-z0-9]+)*$'], true],
+    'filenames/match-regex': [2, 
+      [
+        // '^([a-z][a-z0-9]*)(-[a-z0-9]+)*$',
+        '^([a-z][a-z0-9]*)(-[a-z0-9]+|.spec+)*$',
+      ],
+      true,
+    ],
   },
 };

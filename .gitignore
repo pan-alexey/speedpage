@@ -3,6 +3,7 @@
 .tscache
 .DS_Store
 node_modules/
+build/
 typings/
 coverage/
 sauce_connect.log
