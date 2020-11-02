@@ -8,6 +8,9 @@ module.exports = {
   roots: [
     '<rootDir>/src',
   ],
+  setupFiles: [
+    '<rootDir>/jest.setup.js',
+  ],
   modulePathIgnorePatterns: ['<rootDir>/tests/package'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',

@@ -3,12 +3,14 @@ import { logger } from '../utils/logger';
 import * as path from 'path';
 import * as _ from 'lodash';
 
-export const metrics = async (callback: Promise<void>, timeout = 10000): Promise<void> => {
-  const sessionId = _.uniqueId('session.');
+export const metrics = async (Metric: any, timeout = 10000): Promise<void> => {
+  const sessionId = _.uniqueId('session-');
+  const chromeDataDir =  path.resolve('./tmp', sessionId, 'chrome');
+
   logger.debug('create browser');
   const browser = await puppeteer.launch({
-    // headless: true,
-    userDataDir: path.resolve('./tmp', sessionId),
+    headless: true,
+    userDataDir: chromeDataDir,
     defaultViewport: null,
     devtools: true,
     args: [
@@ -22,15 +24,19 @@ export const metrics = async (callback: Promise<void>, timeout = 10000): Promise
 
   const timer = setTimeout(async () => {
     logger.debug('metrics timeout');
-
-    logger.debug('close browser');
+  
     await browser.close();
+
     // Hard kill process
     // if (browser.process()) {
     //   console.log('kill browser process');
     //   browser.process().kill();
     // }
+
+    throw new Error('metrics timeout');
   }, timeout);
+
+  await Metric();
 
   logger.debug('close browser');
   await browser.close();
