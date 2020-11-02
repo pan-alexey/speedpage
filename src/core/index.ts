@@ -1,8 +1,14 @@
 import * as puppeteer from 'puppeteer';
+import { logger } from '../utils/logger';
+import { logger } from '../utils/logger';
 
 export const Metrics = async (): Promise<void> => {
+
+  const sessionId = 
+  logger.debug('create browser');
   const browser = await puppeteer.launch({
     // headless: true,
+    userDataDir: './tmp',
     defaultViewport: null,
     devtools: true,
     args: [
@@ -15,11 +21,18 @@ export const Metrics = async (): Promise<void> => {
   });
 
   const timer = setTimeout(async ()=> {
-    console.log('timeout');
+    logger.debug('metrics timeout');
+
+    logger.debug('close browser');
     await browser.close();
-  }, 30000);
+    // Hard kill process
+    // if (browser.process()) {
+    //   console.log('kill browser process');
+    //   browser.process().kill();
+    // }
+  }, 10000);
 
-
+  logger.debug('close browser');
   await browser.close();
   clearTimeout(timer);
 };

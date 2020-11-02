@@ -1,5 +1,6 @@
 /* eslint-disable filenames/match-regex */
 module.exports = {
+  preset: 'jest-puppeteer',
   roots: [
     '<rootDir>/src',
   ],
