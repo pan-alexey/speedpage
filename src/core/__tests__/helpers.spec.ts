@@ -10,8 +10,8 @@ describe('helpers', () => {
   });
 
   it('uniq', async () => {
-    console.log(uniq(), uniq());
-    expect(expect.stringContaining(uniq())).not.toEqual(expect.stringContaining(uniq()));
+    expect(expect.stringContaining(uniq()))
+      .not.toEqual(expect.stringContaining(uniq()));
   });
 
 });

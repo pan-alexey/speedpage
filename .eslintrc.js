@@ -20,10 +20,6 @@ module.exports =  {
   plugins: [
     'filenames',
   ],
-  parserOptions:  {
-    ecmaVersion:  2018,  // Allows for the parsing of modern ECMAScript features
-    sourceType:  'module',  // Allows for the use of imports
-  },
   rules: {
     '@typescript-eslint/naming-convention': [
       'error',
@@ -36,42 +32,41 @@ module.exports =  {
         },
       },
     ],
-    "import/prefer-default-export": "off",
+    'import/prefer-default-export': 'off',
     'object-curly-spacing': ['warn', 'always'],
     'no-unused-vars': [
       'warn',
       {
         'vars': 'all',
-        'args': 'none'
-      }
+        'args': 'none',
+      },
     ],
     '@typescript-eslint/no-unused-vars': [
       'warn',
       {
         'vars': 'all',
-        'args': 'none'
-      }
+        'args': 'none',
+      },
     ],
     '@typescript-eslint/no-explicit-any': [
       'error',
       {
-        'ignoreRestArgs': true
-      }
+        'ignoreRestArgs': true,
+      },
     ],
     'max-len': [
       'warn',
       {
-        'code': 80,
+        'code': 120,
         'ignoreStrings': true,
         'ignoreTemplateLiterals': true,
-        'ignoreComments': true
-      }
+        'ignoreComments': true,
+      },
     ],
     quotes: ['error', 'single'],
     semi: ['warn', 'always'],
     'comma-dangle': ['warn', 'always-multiline'],
     'no-undef': 'warn',
-    'no-unused-vars': 'warn',
     'filenames/match-regex': [2, 
       [
         // '^([a-z][a-z0-9]*)(-[a-z0-9]+)*$',

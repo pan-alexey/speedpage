@@ -1,10 +1,7 @@
 import * as puppeteer from 'puppeteer';
 import { logger } from '../utils/logger';
-import { logger } from '../utils/logger';
 
-export const Metrics = async (): Promise<void> => {
-
-  const sessionId = 
+export const metrics = async (callback: Promise<void>, timeout = 10000): Promise<void> => {
   logger.debug('create browser');
   const browser = await puppeteer.launch({
     // headless: true,
@@ -20,7 +17,7 @@ export const Metrics = async (): Promise<void> => {
     ],
   });
 
-  const timer = setTimeout(async ()=> {
+  const timer = setTimeout(async () => {
     logger.debug('metrics timeout');
 
     logger.debug('close browser');
@@ -30,7 +27,7 @@ export const Metrics = async (): Promise<void> => {
     //   console.log('kill browser process');
     //   browser.process().kill();
     // }
-  }, 10000);
+  }, timeout);
 
   logger.debug('close browser');
   await browser.close();
