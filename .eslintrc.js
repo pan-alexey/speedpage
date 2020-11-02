@@ -1,9 +1,12 @@
 /* eslint-disable filenames/match-regex */
 module.exports =  {
   parser:  '@typescript-eslint/parser',  // Specifies the ESLint parser
+  parserOptions: {
+    ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
+    sourceType: 'module', // Allows for the use of imports
+  },
   extends:  [
     'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier/@typescript-eslint',
     'prettier',
@@ -32,6 +35,37 @@ module.exports =  {
           'match': true,
         },
       },
+    ],
+    "import/prefer-default-export": "off",
+    'object-curly-spacing': ['warn', 'always'],
+    'no-unused-vars': [
+      'warn',
+      {
+        'vars': 'all',
+        'args': 'none'
+      }
+    ],
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        'vars': 'all',
+        'args': 'none'
+      }
+    ],
+    '@typescript-eslint/no-explicit-any': [
+      'error',
+      {
+        'ignoreRestArgs': true
+      }
+    ],
+    'max-len': [
+      'warn',
+      {
+        'code': 80,
+        'ignoreStrings': true,
+        'ignoreTemplateLiterals': true,
+        'ignoreComments': true
+      }
     ],
     quotes: ['error', 'single'],
     semi: ['warn', 'always'],

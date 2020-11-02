@@ -1,6 +1,8 @@
 /* eslint-disable filenames/match-regex */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+const CleanTerminalPlugin = require('clean-terminal-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   mode: 'development',
@@ -16,9 +18,9 @@ module.exports = {
     path: path.resolve(__dirname, './build/'),
     filename: 'index.js',
   },
-  // node: {
-  //   process: false,
-  // },
+  target: 'node',
+  externals: [nodeExternals()],
+  plugins: [new CleanTerminalPlugin()],
   module: {
     rules: [
       {

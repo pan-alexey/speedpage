@@ -1,2 +1,5 @@
-import b from './web-vitals';
-console.log(b);
+import { Metrics } from './core';
+
+(async () => {
+  await Metrics();
+})();

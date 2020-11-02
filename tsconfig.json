@@ -1,19 +1,30 @@
 {
   "compilerOptions": {
-      "target": "es5",
-      "module": "commonjs",
-      "sourceMap": true,
-      "outDir": "./build",
-      "rootDir": "./src",
-      "strict": true,
-      "noImplicitAny": true,
-      "moduleResolution": "node",
-      "baseUrl": "./src",
-      "esModuleInterop": true,
-      "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true
+    "baseUrl": "./",
+    "target": "es6",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "typeRoots": [ "node_modules/@types" ],
+    "types": [
+      "jest",
+      "node",
+    ],
+    "strict": true,
+    "removeComments": true,
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedParameters": false,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
   },
-  "lib": ["es2015"],
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["**/*"],
+  "exclude": ["node_modules"],
+  "files": [
+    "index.d.ts"
+  ]
 }
