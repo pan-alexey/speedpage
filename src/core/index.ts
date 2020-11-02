@@ -1,11 +1,14 @@
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 import { logger } from '../utils/logger';
+import * as path from 'path';
+import * as _ from 'lodash';
 
 export const metrics = async (callback: Promise<void>, timeout = 10000): Promise<void> => {
+  const sessionId = _.uniqueId('session.');
   logger.debug('create browser');
   const browser = await puppeteer.launch({
     // headless: true,
-    userDataDir: './tmp',
+    userDataDir: path.resolve('./tmp', sessionId),
     defaultViewport: null,
     devtools: true,
     args: [

@@ -1,6 +1,10 @@
 /* eslint-disable filenames/match-regex */
 module.exports = {
-  preset: 'jest-puppeteer',
+  // preset: Object.assign(
+  //   ts_preset, 
+  //   puppeteer_preset,
+  // ),
+  testEnvironment: 'node',
   roots: [
     '<rootDir>/src',
   ],

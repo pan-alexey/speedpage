@@ -1,4 +1,4 @@
-import { sleep, uniq } from '../helpers';
+import { sleep } from '../helpers';
 
 describe('helpers', () => {
   it('sleep', async () => {
@@ -8,10 +8,4 @@ describe('helpers', () => {
     const endTime = Number(new Date());
     expect(endTime - timeStart >= ms).toBe(true);
   });
-
-  it('uniq', async () => {
-    expect(expect.stringContaining(uniq()))
-      .not.toEqual(expect.stringContaining(uniq()));
-  });
-
 });

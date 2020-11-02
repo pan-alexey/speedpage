@@ -3,6 +3,7 @@
 .tscache
 .DS_Store
 node_modules/
+tmp/
 build/
 typings/
 coverage/
