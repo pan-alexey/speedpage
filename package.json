@@ -24,7 +24,8 @@
   "dependencies": {
     "@types/expect-puppeteer": "^4.4.5",
     "lodash": "^4.17.20",
-    "puppeteer": "^5.4.1"
+    "puppeteer": "^5.4.1",
+    "speedline-core": "^1.4.3"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",

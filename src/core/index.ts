@@ -5,7 +5,8 @@ import * as _ from 'lodash';
 
 export const metrics = async (Metric: Promise<void>, timeout = 10000): Promise<void> => {
   const sessionId = _.uniqueId('session-');
-  const chromeDataDir =  path.resolve('./tmp', sessionId, 'chrome');
+  const sessionPaths = path.resolve('./tmp', sessionId);
+  const chromeDataDir =  path.resolve(sessionPaths, 'chrome');
 
   logger.debug('create browser');
   const browser = await puppeteer.launch({
@@ -27,7 +28,7 @@ export const metrics = async (Metric: Promise<void>, timeout = 10000): Promise<v
     browser.close().finally(()=>{
       throw new Error('metrics timeout');
     });
-    // Hard kill process
+    // Hard kill process not recomended because process().kill() await many time;
     // if (browser.process()) {
     //   console.log('kill browser process');
     //   browser.process().kill();
