@@ -1,6 +1,6 @@
 import { metrics } from './core';
-import { sleep } from './core/helpers';
+import { sleep } from './helpers';
 
 (async () => {
-  await metrics(sleep(1000), 10000);
+  await metrics(sleep(1000), 100);
 })();

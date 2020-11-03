@@ -3,7 +3,7 @@ import { logger } from '../utils/logger';
 import * as path from 'path';
 import * as _ from 'lodash';
 
-export const metrics = async (Metric: any, timeout = 10000): Promise<void> => {
+export const metrics = async (Metric: Promise<void>, timeout = 10000): Promise<void> => {
   const sessionId = _.uniqueId('session-');
   const chromeDataDir =  path.resolve('./tmp', sessionId, 'chrome');
 
@@ -24,19 +24,18 @@ export const metrics = async (Metric: any, timeout = 10000): Promise<void> => {
 
   const timer = setTimeout(async () => {
     logger.debug('metrics timeout');
-  
-    await browser.close();
-
+    browser.close().finally(()=>{
+      throw new Error('metrics timeout');
+    });
     // Hard kill process
     // if (browser.process()) {
     //   console.log('kill browser process');
     //   browser.process().kill();
     // }
-
-    throw new Error('metrics timeout');
+    // 
   }, timeout);
 
-  await Metric();
+  await (() => Metric)();
 
   logger.debug('close browser');
   await browser.close();
