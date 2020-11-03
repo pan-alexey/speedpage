@@ -1,6 +1,14 @@
-import { metrics } from './core';
+import { Metrics, speedpage } from './core';
 import { sleep } from './helpers';
 
+import { Directions } from './preset/direction';
+
+
 (async () => {
-  await metrics(sleep(1000), 100);
+
+  const metric = new Metrics({
+    url: 'https://www.ozon.tu',
+  });
+
+  await speedpage(metric, 100);
 })();

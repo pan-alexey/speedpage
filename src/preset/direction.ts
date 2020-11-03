@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
+import { Page, Request } from 'puppeteer';
 
 export interface IPageNetworkEvents {
   method: unknown;
@@ -10,6 +10,19 @@ export interface IPageEvents {
   response: Array<unknown>;
   requestfailed: Array<unknown>;
   console: Array<unknown>;
+}
+
+export interface IDirectionsOptions {
+  url: string;
+  alias?: string;
+  enablePerfomanseMetrics?: boolean;
+  disableJavascript?: boolean;
+  extraHeaders?: {
+    [key: string]: string
+  }
+  cookies?: Array<{
+    [key: string] : string | number;
+  }>
 }
 
 export interface IDirectionsCollectedData {
@@ -29,6 +42,20 @@ export interface IDirectionsCollectedData {
     js: unknown;
     css: unknown;
   }
-  tracing: object;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  tracing: any;
   content: string;
+}
+
+export class Directions {
+  private options: IDirectionsOptions;
+  private page: Page;
+
+  constructor(options:IDirectionsOptions) {
+    this.options = options;
+  }
+
+  async init(page: Page): Promise<void> {
+    this.page = page;
+  }
 }

@@ -3,7 +3,12 @@ import { logger } from '../utils/logger';
 import * as path from 'path';
 import * as _ from 'lodash';
 
-export const metrics = async (Metric: Promise<void>, timeout = 10000): Promise<void> => {
+
+export class Metrics {
+  constructor() {}
+}
+
+export const speedpage = async (metric: Promise<void>| Metrics, timeout = 10000): Promise<void> => {
   const sessionId = _.uniqueId('session-');
   const sessionPaths = path.resolve('./tmp', sessionId);
   const chromeDataDir =  path.resolve(sessionPaths, 'chrome');
@@ -36,7 +41,14 @@ export const metrics = async (Metric: Promise<void>, timeout = 10000): Promise<v
     // 
   }, timeout);
 
-  await (() => Metric)();
+  if (metric instanceof Metrics) {
+    logger.info('start metrics');
+
+    logger.info('close metrics');
+  } else {
+    // for jest testing
+    await (() => metric)();
+  }
 
   logger.debug('close browser');
   await browser.close();
