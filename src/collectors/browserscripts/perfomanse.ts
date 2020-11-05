@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undef */
-export default ((w) => {
+export const perfomanseObserver = () => {
   const name = '$$getPerfomanse';
   const context: any = {};
 
@@ -115,4 +115,4 @@ export default ((w) => {
   };
 
   window[name] = () =>  serialize(context);
-})(window);
+};

@@ -1,42 +1,24 @@
-class Mark {
-  private startMarks: {
-    [key: string] : number
-  } = {};
+export const sleep = (ms: number, arg?: unknown): Promise<unknown> => {
+  return new Promise((resolve) => setTimeout(() => {
+    resolve(arg);
+  }, ms));
+};
 
-  private endMarks: {
-    [key: string] : number
-  } = {};
+export const awaitTimeout = (callback: Promise<unknown>, timeout = 180000): Promise<{
+  result: unknown, error: unknown
+}> => {
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => {
+      resolve({ result: null, error: 'Timeout Error' });
+    }, timeout);
 
-  public clear() {
-    this.startMarks = {};
-    this.endMarks = {};
-  }
-
-  public start(mark: string): void {
-    this.startMarks[mark] = Number(new Date());
-  }
-
-  public end(mark: string): void {
-    this.startMarks[mark] = Number(new Date());
-  }
-
-  public get(mark: string): number|null {
-    if (this.endMarks[mark] && this.startMarks[mark]) {
-      return this.endMarks[mark] - this.startMarks[mark];
-    }
-
-    if (!this.endMarks[mark] && this.startMarks[mark]) {
-      return Number(new Date()) - this.startMarks[mark];
-    }
-
-    return null;
-  }
-}
-
-export const mark = new Mark();
-
-
-
-export const sleep = (ms: number): Promise<void> => {
-  return new Promise((resolve)=>setTimeout(resolve, ms));
+    callback.then((result) => {
+      resolve({ result, error: null });
+    }).catch((error) => {
+      resolve({ result: null, error });
+    }).finally(() => {
+      clearTimeout(timer);
+    });
+  });
 };

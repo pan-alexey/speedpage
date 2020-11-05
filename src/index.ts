@@ -1,14 +1,34 @@
-import { Metrics, speedpage } from './core';
-import { sleep } from './helpers';
+import { awaitTimeout } from './helpers';
+import { Browser } from './service/browser';
+import { logger } from './utils/logger';
+import { direct } from './core/direct';
 
-import { Directions } from './preset/direction';
+const browserService = new Browser();
+const runner = async () => {
+  const urls = [
+    'https://www.ozon.ru',
+  ];
 
+  for (let i = 0; i < urls.length; i++) {
+    const url = urls[i];
+    logger.mark(`start for url: ${url}`);
+    const browser = await browserService.create(['--enable-thread-instruction-count']);
+    const collector = direct(browser, {
+      url
+    });
 
-(async () => {
+    const { result, error } = await awaitTimeout(collector, 140000);
 
-  const metric = new Metrics({
-    url: 'https://www.ozon.tu',
-  });
+    if (error) {
+      await browserService.restart();
+      logger.error({ error })
+      return;
+    }
 
-  await speedpage(metric, 100);
-})();
+    await browserService.close();
+    logger.mark(`end for url: ${url}`);
+  }
+
+  await runner();
+}
+runner();

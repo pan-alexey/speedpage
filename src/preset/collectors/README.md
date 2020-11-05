@@ -1,1 +1,0 @@
-All Collectors is DI

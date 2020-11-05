@@ -1,5 +1,3 @@
-import { Page, Request } from 'puppeteer';
-
 export interface IPageNetworkEvents {
   method: unknown;
   params: unknown;
@@ -12,9 +10,10 @@ export interface IPageEvents {
   console: Array<unknown>;
 }
 
-export interface IDirectionsOptions {
+export interface IDirectOptions {
   url: string;
   alias?: string;
+  clearCache?: boolean
   enablePerfomanseMetrics?: boolean;
   disableJavascript?: boolean;
   extraHeaders?: {
@@ -25,9 +24,12 @@ export interface IDirectionsOptions {
   }>
 }
 
-export interface IDirectionsCollectedData {
+export interface IDirectCollectedData {
   // option: IMetricsCustomOption;
-  elapsedTime: number|null;
+  elapsedTime: {
+    start: number;
+    finish: number
+  };
   pageEvents: IPageEvents;
   networkEvents: Array<IPageNetworkEvents>;
   metrics: {
@@ -47,15 +49,4 @@ export interface IDirectionsCollectedData {
   content: string;
 }
 
-export class Directions {
-  private options: IDirectionsOptions;
-  private page: Page;
-
-  constructor(options:IDirectionsOptions) {
-    this.options = options;
-  }
-
-  async init(page: Page): Promise<void> {
-    this.page = page;
-  }
-}
+export type ICollectData = IDirectCollectedData;

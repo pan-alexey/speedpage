@@ -1,6 +1,6 @@
 import { Page } from 'puppeteer';
-import { IDirectionsCollectedData } from '../direction';
-import { logger } from '../../utils/logger';
+import { ICollectData } from '../types';
+import { logger } from '../utils/logger';
 
 const networkEvents = [
   'Page.loadEventFired',
@@ -16,7 +16,7 @@ const networkEvents = [
   'Network.loadingFailed',
 ];
 
-export default async (page: Page, context: IDirectionsCollectedData): Promise<void> => {
+export default async (page: Page, context: ICollectData): Promise<void> => {
   logger.debug('[collect] - start page network events;');
   const client = await page.target().createCDPSession();
 

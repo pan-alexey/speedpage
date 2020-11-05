@@ -1,26 +1,28 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "target": "es6",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
     "typeRoots": [ "node_modules/@types" ],
     "types": [
       "jest",
       "node",
     ],
     "strict": true,
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "sourceMap": true,
     "removeComments": true,
+    "preserveConstEnums": true,
+    "declaration": false,
+    "target": "es6",
+    "lib": ["es2015", "dom"],
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedParameters": false,
-    "esModuleInterop": true,
-    "noImplicitAny": true,
-    "preserveConstEnums": true,
-    "sourceMap": true,
+    "pretty": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowUnreachableCode": false,
+    "outDir":"./build"
   },
   "include": ["**/*"],
   "exclude": ["node_modules"],
