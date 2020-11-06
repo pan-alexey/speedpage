@@ -4,5 +4,5 @@
 declare module 'lodash';
 
 interface Window {
-  '$$getPerfomanse': any;
+  $$perfomanse: any;
 }

@@ -2,31 +2,48 @@ import { Page } from 'puppeteer';
 import { ICollectData } from '../types';
 import { logger } from '../utils/logger';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-import { perfomanseObserver } from './browserscripts/perfomanse'
-
+const collectWindowMetrics = require('./browserscripts/perfomanse');
 export const startWindowMetrics = async (page: Page): Promise<void> => {
   logger.debug('[collect] - inject browser script');
+  await page.evaluateOnNewDocument(collectWindowMetrics);
+};
+
+// 
+export const startWindowMetricsSpa = async (page: Page): Promise<void> => {
+  logger.debug('[collect] - inject browser script');
   await Promise.all([
-    await page.evaluateOnNewDocument(()=>perfomanseObserver()),
-    await page.evaluate(()=>perfomanseObserver()),
+    page.evaluateOnNewDocument(collectWindowMetrics),
+    page.evaluate(collectWindowMetrics),
   ]);
 };
 
 export const stopWindowMetrics = async (page: Page, context: ICollectData): Promise<void> => {
   logger.debug('[collect] - collect window performance');
-  const [performance, entries] = await Promise.all([
-    page.evaluate(() => JSON.stringify(window.performance)),
-    page.evaluate(() => JSON.stringify(window.performance.getEntries())),
-  ]);
 
-  context.windowPerformance.performance = JSON.parse(performance);
-  context.windowPerformance.entries = JSON.parse(entries);
+  // const [performance, entries, perfomanseObserver] = await Promise.all([
+  //   page.evaluate(() => JSON.stringify(window.performance)),
+  //   page.evaluate(() => JSON.stringify(window.performance.getEntries())),
+  //   page.evaluate(() => {
+  //      return JSON.stringify(null);
+  //     //  if (window['$$perfomanse'])
+  //     // return JSON.stringify(window.$$perfomanse.getPerfomance());
+  //   }),
+  // ]);
 
-  const perfomanseObserver = await page.evaluate(() => {
-    if (window.$$getPerfomanse) return JSON.stringify(null);
-    return JSON.stringify(window.$$getPerfomanse());
-  });
-
-  context.windowPerformance.perfomanseObserver = JSON.parse(perfomanseObserver);
+  // context.windowPerformance = {
+  //   performance: JSON.parse(performance),
+  //   entries: JSON.parse(entries),
+  //   perfomanseObserver: JSON.parse(perfomanseObserver)
+  // }
 };
+
+
+export const showWindowMetrics = async (page: Page): Promise<void> => {
+  await page.evaluate(() => {
+    // console.log(window['$$perfomanse']);
+    // if (!window['$$perfomanse']) return null;
+    // try {
+    //   window['$$perfomanse'].show_cls();
+    // } catch (error) {}
+  });
+}

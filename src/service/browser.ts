@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as puppeteer from 'puppeteer';
 import { logger } from '../utils/logger';
-
+import { sleep } from '../helpers/index';
 class Browser {
   private browser: puppeteer.Browser | undefined;
   private options: any;
 
-  async create(args: Array<string>, userDataDir?: string):Promise<puppeteer.Browser> {
-    logger.debug('create browser');
+  constructor(args: Array<string>, userDataDir?: string) {
     const options: any = {
       headless: true,
       defaultViewport: null,
@@ -26,7 +25,9 @@ class Browser {
     };
 
     this.options = options;
+  }
 
+  async create():Promise<puppeteer.Browser> {
     // hard kill old instanse
     if (this.browser && this.browser.process()) {
       this.browser.process().kill();
@@ -62,7 +63,7 @@ class Browser {
     }
 
     await this.browser.close();
-    logger.debug('stop browser');
+    // await sleep(10000000);
   }
 }
 

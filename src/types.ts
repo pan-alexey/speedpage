@@ -18,7 +18,8 @@ export interface IDirectOptions {
   disableJavascript?: boolean;
   extraHeaders?: {
     [key: string]: string
-  }
+  },
+  tmpDir?: string;
   cookies?: Array<{
     [key: string] : string | number;
   }>

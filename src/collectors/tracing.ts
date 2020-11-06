@@ -9,11 +9,17 @@ export const startTracing = async (page: Page) => {
     path: '',
     screenshots: true,
     categories: [
-      '*',
+      '-*',
+      'disabled-by-default-lighthouse',
+      'v8',
+      'v8.execute',
+      'blink.user_timing',
+      'devtools.timeline',
       'disabled-by-default-devtools.timeline',
       'disabled-by-default-v8.cpu_profiler',
       'disabled-by-default-v8.cpu_profiler.hires',
-      'disabled-by-default-devtools.screenshot',
+      'disabled-by-default-devtools.timeline',
+      'disabled-by-default-devtools.timeline.stack',
     ],
   });
 };
