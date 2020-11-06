@@ -1,6 +1,6 @@
 
-import { ICollectData } from '../types';
-import { logger } from '../utils/logger';
+import { ICollectData } from '../../types';
+import { logger } from '../../utils/logger';
 
 export const startElapsedTime = (context: ICollectData) => {
   // context.elapsedTime['start'] = Number(new Date());

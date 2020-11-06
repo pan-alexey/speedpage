@@ -1,10 +1,10 @@
 import * as puppeteer from 'puppeteer';
 
-import { awaitTimeout } from './helpers';
-import { Browser } from './service/browser';
-import { logger } from './utils/logger';
-import { direct } from './core/direct';
-import { sleep } from './helpers/index';
+import { awaitTimeout } from '../helpers';
+import { Browser } from '../service/browser';
+import { logger } from '../utils/logger';
+import { direct } from '../core/direct';
+import { sleep } from '../helpers/index';
 
 (async () => {
   // To share cookies between sessions, to bypass captcha, we create a class and use share userDataDir.
@@ -32,6 +32,8 @@ import { sleep } from './helpers/index';
         logger.error({ error });
         continue;
       }
+
+      console.log(result);
 
       await browserService.close();
       logger.mark(`end for url: ${url}`);

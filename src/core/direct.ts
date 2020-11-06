@@ -3,9 +3,10 @@ import { IDirectCollectedData, IDirectOptions } from '../types';
 import { logger } from '../utils/logger';
 import { sleep } from '../helpers/index';
 
-import { startElapsedTime, stopElapsedTime } from '../collectors/elapsed-time';
-import { startWindowMetrics, stopWindowMetrics, showWindowMetrics } from '../collectors/window-metrics';
+import { startElapsedTime, stopElapsedTime } from './collectors/elapsed-time';
+import { startWindowMetrics, stopWindowMetrics, showWindowMetrics } from './collectors/window-metrics';
 
+import { collectNetworkEvents } from './collectors/network';
 
 export const direct = async (browser: puppeteer.Browser, options: IDirectOptions): 
 Promise<IDirectCollectedData|null> => {
@@ -23,7 +24,8 @@ Promise<IDirectCollectedData|null> => {
   await client.send('Page.enable');
   await client.send('Network.enable');
 
-  logger.info('Page.enable');
+  logger.info('page newtwork enable');
+
   if (options.extraHeaders) {
     page.setExtraHTTPHeaders(options.extraHeaders);
   }
@@ -43,10 +45,13 @@ Promise<IDirectCollectedData|null> => {
   await client.send('Network.enable');
 
   // Inject web-vitals metrics
-  startWindowMetrics(page);
+  await startWindowMetrics(page);
 
+  await collectNetworkEvents(page, context);
 
+  // Main enter in page
   await page.goto(options.url);
+  await sleep(2500); // Most animations take place after 3 seconds, but other metrics place after 5 seconds
 
   await stopWindowMetrics(page, context);
   stopElapsedTime(context);
@@ -54,11 +59,11 @@ Promise<IDirectCollectedData|null> => {
   console.log(context);
   logger.info(`stop direct for url: ${options.url}`);
 
-  await sleep(5000);
-
+  // Disable animation
+  await client.send('Animation.disable');
+  await client.send('Animation.setPlaybackRate', { playbackRate: 0 });
   await showWindowMetrics(page);
 
-
-  // await sleep(1000000000);
+  await sleep(1000000000);
   return null;
 };

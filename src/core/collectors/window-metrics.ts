@@ -1,16 +1,10 @@
 import { Page } from 'puppeteer';
-import { ICollectData } from '../types';
-import { logger } from '../utils/logger';
+import { ICollectData } from '../../types';
+import { logger } from '../../utils/logger';
 
-const collectWindowMetrics = require('./browserscripts/perfomanse');
 export const startWindowMetrics = async (page: Page): Promise<void> => {
   logger.debug('[collect] - inject browser script');
-  await page.evaluateOnNewDocument(collectWindowMetrics);
-};
-
-// 
-export const startWindowMetricsSpa = async (page: Page): Promise<void> => {
-  logger.debug('[collect] - inject browser script');
+  const collectWindowMetrics = require('./browserscripts/perfomanse');
   await Promise.all([
     page.evaluateOnNewDocument(collectWindowMetrics),
     page.evaluate(collectWindowMetrics),
@@ -46,4 +40,4 @@ export const showWindowMetrics = async (page: Page): Promise<void> => {
     //   window['$$perfomanse'].show_cls();
     // } catch (error) {}
   });
-}
+};

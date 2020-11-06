@@ -1,10 +1,6 @@
 import { Page } from 'puppeteer';
-
-import { ICollectData } from '../types';
-import { logger } from '../utils/logger';
-
-
-
+import { ICollectData } from '../../types';
+import { logger } from '../../utils/logger';
 
 // interface ICollectCoverage {
 //   startCoverage: () => Promise<void>;

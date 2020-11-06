@@ -1,6 +1,6 @@
 import { Page } from 'puppeteer';
-import { ICollectData } from '../types';
-import { logger } from '../utils/logger';
+import { ICollectData } from '../../types';
+import { logger } from '../../utils/logger';
 
 const networkEvents = [
   'Page.loadEventFired',
@@ -16,10 +16,16 @@ const networkEvents = [
   'Network.loadingFailed',
 ];
 
-export default async (page: Page, context: ICollectData): Promise<void> => {
-  logger.debug('[collect] - start page network events;');
-  const client = await page.target().createCDPSession();
+function logRequest(interceptedRequest) {
+  console.log('A request was made:', interceptedRequest.url());
+}
 
+
+export const startNetworkEvents = async (page: Page, context: ICollectData): Promise<void> => {
+  logger.debug('[collect] - start page network events;');
+  context.networkEvents = [];
+
+  const client = await page.target().createCDPSession();
   networkEvents.forEach(method => {
     client.on(method, params => {
       context.networkEvents.push({ method, params });
@@ -28,4 +34,13 @@ export default async (page: Page, context: ICollectData): Promise<void> => {
 
   await client.send('Page.enable');
   await client.send('Network.enable');
+};
+
+
+export const stopNetworkEvents = async (page: Page, context: ICollectData): Promise<void> => {
+  logger.debug('[collect] - start page network events;');
+  context.networkEvents = [];
+
+  const client = await page.target().createCDPSession();
+  client.removeAllListeners();
 };

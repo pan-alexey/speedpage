@@ -1,7 +1,6 @@
 import { Page } from 'puppeteer';
-
-import { ICollectData } from '../types';
-import { logger } from '../utils/logger';
+import { ICollectData } from '../../types';
+import { logger } from '../../utils/logger';
 
 export const startTracing = async (page: Page) => {
   logger.debug('[collect] - start tracing');
