@@ -22,3 +22,9 @@ export const awaitTimeout = (callback: Promise<unknown>, timeout = 180000): Prom
     });
   });
 };
+
+
+export const uid = (radix = 16, prefix = '', postfix = ''): string => {
+  const uid = Date.now().toString(radix)+Math.random().toString(radix);
+  return `${postfix}${uid}`;
+};

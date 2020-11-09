@@ -1,7 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable filenames/match-regex */
-
-declare module 'lodash';
 
 interface Window {
   $$perfomanse: any;

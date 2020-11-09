@@ -1,6 +1,8 @@
 import { Page } from 'puppeteer';
 import { ICollectData } from '../../types';
 import { logger } from '../../utils/logger';
+import * as fs from 'fs';
+import * as SafeJsonStringify from 'safe-json-stringify';
 
 const networkEvents = [
   'Page.loadEventFired',
@@ -16,13 +18,8 @@ const networkEvents = [
   'Network.loadingFailed',
 ];
 
-function logRequest(interceptedRequest) {
-  console.log('A request was made:', interceptedRequest.url());
-}
-
-
 export const startNetworkEvents = async (page: Page, context: ICollectData): Promise<void> => {
-  logger.debug('[collect] - start page network events;');
+  logger.mark('[start collect] - start page network events;');
   context.networkEvents = [];
 
   const client = await page.target().createCDPSession();
@@ -36,11 +33,12 @@ export const startNetworkEvents = async (page: Page, context: ICollectData): Pro
   await client.send('Network.enable');
 };
 
-
-export const stopNetworkEvents = async (page: Page, context: ICollectData): Promise<void> => {
-  logger.debug('[collect] - start page network events;');
-  context.networkEvents = [];
-
+export const stopNetworkEvents = async (page: Page, context: ICollectData, rawPath?:string): Promise<void> => {
+  logger.mark('[stop collect] - start page network events;');
   const client = await page.target().createCDPSession();
+  const json = SafeJsonStringify( context.networkEvents );
+  if (rawPath) {
+    fs.writeFileSync(rawPath, json);
+  }
   client.removeAllListeners();
 };

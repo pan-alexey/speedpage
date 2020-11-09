@@ -12,6 +12,8 @@ export interface IPageEvents {
 
 export interface IDirectOptions {
   url: string;
+  tmpDir: string;
+  saveRaw?: boolean;
   alias?: string;
   clearCache?: boolean
   enablePerfomanseMetrics?: boolean;
@@ -19,7 +21,6 @@ export interface IDirectOptions {
   extraHeaders?: {
     [key: string]: string
   },
-  tmpDir?: string;
   cookies?: Array<{
     [key: string] : string | number;
   }>

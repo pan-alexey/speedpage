@@ -8,7 +8,7 @@ class Browser {
 
   constructor(args: Array<string>, userDataDir?: string) {
     const options: any = {
-      headless: true,
+      headless: false,
       defaultViewport: null,
       devtools: true,
       args: [
@@ -63,7 +63,7 @@ class Browser {
     }
 
     await this.browser.close();
-    // await sleep(10000000);
+    await sleep(5000);
   }
 }
 

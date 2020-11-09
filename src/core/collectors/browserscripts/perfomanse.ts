@@ -5,10 +5,7 @@
 
 module.exports = () => {
   window['$$perfomanse'] = {};
-
   window['$$perfomanse'].context = {};
-
-  console.log('Web vitals inject to tab');
 
   // [FID] - First Input Delay (https://web.dev/fid/)
   (function (context) {
@@ -78,47 +75,74 @@ module.exports = () => {
   })(window['$$perfomanse'].context);
 
 
-  // // Function for serialize PerformanceObserver data;
-  // // $$perfomanse.serialize($$perfomanse.context)
-  // const serialize = (obj: any) => {
-  //   if (obj === null || typeof (obj) != 'object') {
-  //     return obj;
-  //   }
-  //   const temp: any = {};
+  // Function for serialize PerformanceObserver data;
+  // $$perfomanse.serialize($$perfomanse.context)
+  const serialize = (obj: any) => {
+    if (obj === null || typeof (obj) != 'object') {
+      return obj;
+    }
+    const temp: any = {};
 
-  //   // if (obj instanceof Element) {
-  //   //   return obj.innerHTML
-  //   // }
+    const htmlToString = (element) => {
+      let str = '<'+element.tagName;
+      for (let i = 0; i < element.attributes.length; i++) {
+          const attr = element.attributes[i];
+          const attrs = attr.value ? attr.name + '=' + `"${attr.value}"` : attr.name;
+          str += ' ' + attrs;
+      }
+      str += '>';
+      str += element.innerHTML;
+      str += `</${element.tagName}>`;
 
-  //   if (obj instanceof LayoutShift) {
-  //     for (const key in obj.sources) {
-  //       temp[key] = {};
-  //       temp[key].value = obj.sources[key].value;
-  //       temp[key].node = obj.sources[key].node ? obj.sources[key].node.innerHTML : obj.sources[key].node;
-  //       temp[key].currentRect = obj.sources[key].currentRect;
-  //       temp[key].previousRect = obj.sources[key].previousRect;
-  //     }
-  //     return temp;
-  //   }
+      return str;
+    };
 
-  //   if (obj instanceof PerformanceLongTaskTiming) {
-  //     for (const key in obj) {
-  //       temp[key] = {};
-  //       temp[key].duration = obj.duration;
-  //       temp[key].entryType = obj.entryType;
-  //       temp[key].name = obj.name;
-  //       temp[key].startTime = obj.startTime;
-  //       temp[key].attribution = Array.prototype.slice.call(obj.attribution);
-  //     }
-  //     return temp;
-  //   }
+    if (obj instanceof LayoutShift) {
+      for (const key in obj.sources) {
+        temp[key] = {};
+        temp[key].value = obj.sources[key].value;
+        temp[key].node = obj.sources[key].node ? htmlToString(obj.sources[key].node) : obj.sources[key].node;
+        temp[key].currentRect = obj.sources[key].currentRect;
+        temp[key].previousRect = obj.sources[key].previousRect;
+      }
+      return temp;
+    }
 
-  //   for (const key in obj) {
-  //     temp[key] = serialize(obj[key]);
-  //   }
-  //   return temp;
-  // };
+    if (obj instanceof PerformanceLongTaskTiming) {
+      for (const key in obj) {
+        temp[key] = {};
+        temp[key].duration = obj.duration;
+        temp[key].entryType = obj.entryType;
+        temp[key].name = obj.name;
+        temp[key].startTime = obj.startTime;
+        temp[key].attribution = Array.prototype.slice.call(obj.attribution);
+      }
+      return temp;
+    }
 
-  // window['$$perfomanse'].serialize = serialize;
-  //window['$$perfomanse']['getPerfomance'] = () => JSON.stringify(serialize(window['$$perfomanse'].context));
+    if (obj instanceof LargestContentfulPaint) {
+      for (const key in obj) {
+        temp[key] = {};
+        temp[key].element = htmlToString(obj.element);
+        temp[key].entryType = obj.entryType;
+        temp[key].id = obj.id;
+        temp[key].loadTime = obj.loadTime;
+        temp[key].name = obj.name;
+        temp[key].renderTime = obj.renderTime;
+        temp[key].size = obj.size;
+        temp[key].startTime = obj.startTime;
+        temp[key].url = obj.url;
+      }
+      return temp;
+    }
+
+    for (const key in obj) {
+      temp[key] = serialize(obj[key]);
+    }
+    return temp;
+  };
+  window['$$perfomanse'].serialize = serialize; // for debug;
+  window['$$perfomanse'].toJSON = () => {
+    return serialize(window['$$perfomanse'].context);
+  };
 };

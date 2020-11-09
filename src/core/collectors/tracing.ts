@@ -1,9 +1,10 @@
 import { Page } from 'puppeteer';
 import { ICollectData } from '../../types';
 import { logger } from '../../utils/logger';
+import * as fs from 'fs';
 
-export const startTracing = async (page: Page) => {
-  logger.debug('[collect] - start tracing');
+export const startTracing = async (page: Page): Promise<void> => {
+  logger.debug('[start collect] - tracing');
   await page.tracing.start({
     path: '',
     screenshots: true,
@@ -23,7 +24,12 @@ export const startTracing = async (page: Page) => {
   });
 };
 
-export const stopTracing = async (page: Page, context: ICollectData) => {
-  const tracing = JSON.parse(String(await page.tracing.stop()));
-  context.tracing = tracing;
+export const stopTracing = async (page: Page, context: ICollectData, rawPath?:string): Promise<void> => {
+  logger.debug('[stop collect] - tracing');
+  const tracing = String(await page.tracing.stop());
+  context.tracing = JSON.parse(tracing);
+
+  if (rawPath) {
+    fs.writeFileSync(rawPath, tracing);
+  }
 };
