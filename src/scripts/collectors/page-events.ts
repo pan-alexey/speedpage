@@ -13,22 +13,23 @@ export const startCollectPageEvents  = async (page: Page, context: ICollectData)
     response: [],
     console: [],
   };
+
+  //TODO fix for requestfailed & response;
   page.on('pageerror', ({ message }) => context.pageEvents.pageerror.push(message));
-  page.on('requestfailed', request => context.pageEvents.requestfailed.push(request)); // Request is a Node object Request
-  page.on('response', response => context.pageEvents.response.push(response)); // Response is a Node object Response
+  // page.on('requestfailed', request => context.pageEvents.requestfailed.push(request)); // Request is a Node object Request
+  // page.on('response', response => context.pageEvents.response.push(response)); // Response is a Node object Response
   page.on('console', (log)=>{
-    // console.log(log);
+    context.pageEvents.console.push(log.text());
   });
 };
 
 export const stopCollectPageEvents  = async (page: Page, context: ICollectData, 
-  rawPath?:string|null|false): Promise<void> => {
+  rawPath?:string|null): Promise<void> => {
   logger.mark('[stop collect] - page events');
 
   if (rawPath) {
-    // //TODO FIX THIS
-    // const json = SafeJsonStringify(context.pageEvents);
-    // fs.writeFileSync(json, rawPath);
+    const json = SafeJsonStringify(context.pageEvents);
+    fs.writeFileSync(rawPath, json);
   }
   page.removeAllListeners();
 };

@@ -7,7 +7,7 @@
     "tsc": "tsc",
     "lint:fix": "eslint ./ --ext .js --ext .ts --fix",
     "lint": "eslint ./ --ext .js --ext .ts",
-    "start": "npm run tsc && node build/scripts/direct.js",
+    "start": "npm run tsc && node build/core/direct.js",
     "test": "LOG_LEVEL=1 jest --coverage --detectOpenHandles --forceExit --runInBand"
   },
   "repository": {
@@ -22,9 +22,9 @@
   "homepage": "https://github.com/pan-alexey/speedpage#readme",
   "dependencies": {
     "@types/expect-puppeteer": "^4.4.5",
-    "json-stringify-safe": "^5.0.1",
     "lodash": "^4.17.20",
     "puppeteer": "^5.4.1",
+    "safe-json-stringify": "^1.2.0",
     "speedline-core": "^1.4.3"
   },
   "devDependencies": {

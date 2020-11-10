@@ -27,7 +27,11 @@ export interface IDirectOptions {
 }
 
 export interface IDirectCollectedData {
-  // option: IMetricsCustomOption;
+  options: IDirectOptions;
+  outputPath: string;
+  screenshots: {
+    screenshot: string; // path finish screenshot;
+  }
   elapsedTime: {
     start: number;
     finish: number

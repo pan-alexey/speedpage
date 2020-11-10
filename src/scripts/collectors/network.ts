@@ -19,7 +19,7 @@ const networkEvents = [
 ];
 
 export const startNetworkEvents = async (page: Page, context: ICollectData): Promise<void> => {
-  logger.mark('[start collect] - start page network events;');
+  logger.mark('[start collect] - page network events;');
   context.networkEvents = [];
 
   const client = await page.target().createCDPSession();
@@ -34,7 +34,7 @@ export const startNetworkEvents = async (page: Page, context: ICollectData): Pro
 };
 
 export const stopNetworkEvents = async (page: Page, context: ICollectData, rawPath?:string): Promise<void> => {
-  logger.mark('[stop collect] - start page network events;');
+  logger.mark('[stop collect] - page network events;');
   const client = await page.target().createCDPSession();
   const json = SafeJsonStringify( context.networkEvents );
   if (rawPath) {

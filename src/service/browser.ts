@@ -8,7 +8,7 @@ class Browser {
 
   constructor(args: Array<string>, userDataDir?: string) {
     const options: any = {
-      headless: false,
+      headless: true,
       defaultViewport: null,
       devtools: true,
       args: [
@@ -28,7 +28,12 @@ class Browser {
   }
 
   async create():Promise<puppeteer.Browser> {
-    // hard kill old instanse
+
+    if (this.browser) {
+      await this.browser.close();
+    }
+
+    // kill old browser process
     if (this.browser && this.browser.process()) {
       this.browser.process().kill();
     }
