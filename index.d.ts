@@ -3,5 +3,5 @@
 /* eslint-disable filenames/match-regex */
 
 interface Window {
-  $$perfomanse: any;
+  $$perfomance: any;
 }

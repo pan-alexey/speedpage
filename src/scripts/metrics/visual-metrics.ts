@@ -5,9 +5,11 @@ export interface IVisualMetrics {
   lastVisualChange: number;
   speedIndex: number;
   perceptualSpeedIndex: number;
-  timelineProgress: { time: number; progress: number; }[];
   visualComplete85: number;
   visualComplete95: number;
+  artifacts: {
+    speedlineFrame: { time: number; progress: number; }[];
+  };
 }
 
 const getVisualComplete85 = (speedlineFrame) => {
@@ -53,19 +55,19 @@ export const visualMetrics = async (trace, begin = 0, duaration?:number): Promis
     return {
       time: (frame.getTimeStamp() - startTs/1000),
       progress: frame.getProgress(),
-      // img: frame.getImage()
+      img: frame.getImage(),
     };
   });
 
   return {
+    artifacts: {
+      speedlineFrame,
+    },
     firstVisualChange: speedlineResult.first,
     lastVisualChange: speedlineResult.complete,
     speedIndex: speedlineResult.speedIndex,
     perceptualSpeedIndex: speedlineResult.speedIndex,
-    timelineProgress: speedlineFrame,
     visualComplete85: getVisualComplete85(speedlineFrame),
     visualComplete95: getVisualComplete95(speedlineFrame),
-    // speedlineResult,
-    // trimmedEvents,
   };
 };

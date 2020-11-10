@@ -7,7 +7,7 @@
     "tsc": "tsc",
     "lint:fix": "eslint ./ --ext .js --ext .ts --fix",
     "lint": "eslint ./ --ext .js --ext .ts",
-    "start": "npm run tsc && node build/core/direct.js",
+    "start": "npm run tsc && node build/core/direct",
     "test": "LOG_LEVEL=1 jest --coverage --detectOpenHandles --forceExit --runInBand"
   },
   "repository": {

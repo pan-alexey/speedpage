@@ -1,11 +1,11 @@
-import { awaitTimeout } from '../helpers';
-import { Browser } from '../service/browser';
-import { logger } from '../utils/logger';
-import { collector } from './direct/collector';
-import { metrics } from './direct/metrics';
-import { uid } from '../helpers';
+import { awaitTimeout } from '../../helpers';
+import { Browser } from '../../service/browser';
+import { logger } from '../../utils/logger';
+import { collector } from '../direct/collector';
+import { metrics } from '../direct/metrics';
+import { uid } from '../../helpers';
 import * as path from 'path';
-import { IDirectCollectedData } from '../types';
+import { IDirectCollectedData } from '../../types';
 
 (async () => {
   // To share cookies between sessions, to bypass captcha, we create a class and use share userDataDir.
@@ -29,6 +29,7 @@ import { IDirectCollectedData } from '../types';
         url,
         tmpDir,
         saveRaw: true,
+        enableBrowserPerfomanceApi: true,
       }), 140000);
   
       if (error) {

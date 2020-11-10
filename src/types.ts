@@ -1,3 +1,6 @@
+import * as puppeteer from 'puppeteer';
+
+
 export interface IPageNetworkEvents {
   method: unknown;
   params: unknown;
@@ -15,15 +18,16 @@ export interface IDirectOptions {
   tmpDir: string;
   saveRaw?: boolean;
   alias?: string;
-  clearCache?: boolean
-  enablePerfomanseMetrics?: boolean;
+  userAgent?: string;
+  clearCache?: boolean;
+  clearCookies?: boolean;
+  clearStorage?: boolean;
+  enableBrowserPerfomanceApi?: boolean;
   disableJavascript?: boolean;
   extraHeaders?: {
     [key: string]: string
   },
-  cookies?: Array<{
-    [key: string] : string | number;
-  }>
+  cookies?: Array<puppeteer.SetCookie>
 }
 
 export interface IDirectCollectedData {
@@ -41,10 +45,10 @@ export interface IDirectCollectedData {
   metrics: {
     [key: string]: unknown
   }
-  windowPerformance: {
+  browserPerformanceApi: {
     performance: unknown;
     entries: unknown;
-    perfomanseObserver: unknown;
+    perfomanceObserver: unknown;
   };
   coverage: {
     js: unknown;

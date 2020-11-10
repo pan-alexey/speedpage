@@ -14,8 +14,6 @@ import { pageMetrics } from '../../scripts/collectors/page-metrics';
 import { startCollectPageEvents, stopCollectPageEvents } from '../../scripts/collectors/page-events';
 import { getConent } from '../../scripts/collectors/content';
 
-
-
 export const collector = async (browser: puppeteer.Browser, options: IDirectOptions): 
 Promise<IDirectCollectedData|null> => {
   logger.info(`start direct for url: ${options.url}`);
@@ -37,6 +35,33 @@ Promise<IDirectCollectedData|null> => {
   await client.send('Page.enable');
   await client.send('Network.enable');
 
+  if (options.clearCache) {
+    await client.send('Network.clearBrowserCache');
+  }
+
+  if (options.clearCookies) {
+    await client.send('Network.clearBrowserCookies');
+  }
+
+  if (options.clearCache) {
+    await client.send('Storage.clearDataForOrigin', {
+      origin: '*',
+      storageTypes: 'all',
+    });
+  }
+
+  if (options.userAgent) {
+    await page.setUserAgent(options.userAgent);
+  }
+
+  if (options.extraHeaders) {
+    page.setExtraHTTPHeaders (options.extraHeaders);
+  }
+
+  if (options.cookies) {
+    await page.setCookie(...options.cookies);
+  }
+
   logger.info('page newtwork enable');
 
   if (options.extraHeaders) {
@@ -57,11 +82,16 @@ Promise<IDirectCollectedData|null> => {
   await client.send('Page.enable');
   await client.send('Network.enable');
 
-  // Inject web-vitals metrics
-  await startWindowMetrics(page);
+
   await startNetworkEvents(page, context);
   await startCollectPageEvents(page, context);
   await pageMetrics(page, context, 'before');
+
+  if (options.enableBrowserPerfomanceApi) {
+    // Inject web-vitals metrics
+    await startWindowMetrics(page);
+  }
+
   await startTracing(page);
 
   // Main enter in page
@@ -72,7 +102,10 @@ Promise<IDirectCollectedData|null> => {
   screenshots['screenshot'] = await takeScreenshots(page, outputPath, 'screenshot');
   await pageMetrics(page, context, 'after');
 
-  await stopWindowMetrics(page, context, rawDir ? path.resolve(rawDir, 'windowMetrics.json'): null); // attention for this collector
+  if (options.enableBrowserPerfomanceApi) {
+    await stopWindowMetrics(page, context, rawDir ? path.resolve(rawDir, 'windowMetrics.json'): null); // attention for this collector
+  }
+
   await getConent(page, context, rawDir ? path.resolve(rawDir, 'conent.html'): null);
   await stopNetworkEvents(page, context, rawDir ? path.resolve(rawDir, 'networkEvents.json'): null);
 
