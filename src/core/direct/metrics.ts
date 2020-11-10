@@ -8,7 +8,7 @@ import { sslTimeBrowserApi } from '../../scripts/metrics/ssl-time';
 import { tcpTimeBrowserApi } from '../../scripts/metrics/tcp-time';
 import { ttfbBrowserApi } from '../../scripts/metrics/ttfb';
 import { ttlbBrowserApi } from '../../scripts/metrics/ttlb';
-import { redirectCountBrowserApi } from '../../scripts/metrics/redirect';
+import { redirectCountBrowserApi, redirectTimeBrowserApi } from '../../scripts/metrics/redirect';
 
 
 export const metrics = async (data: IDirectCollectedData) : Promise<unknown> => {
@@ -91,11 +91,16 @@ export const metrics = async (data: IDirectCollectedData) : Promise<unknown> => 
   });
 
   metrics.push({
-    name: 'ttlb',
+    name: 'redirectTime',
+    group: 'browser',
+    values: redirectTimeBrowserApi(data.browserPerformanceApi.performance),
+  });
+
+  metrics.push({
+    name: 'redirectCount',
     group: 'browser',
     values: redirectCountBrowserApi(data.browserPerformanceApi.performance),
   });
-
   // Check persistends data before return;
 
   return metrics;
@@ -103,30 +108,3 @@ export const metrics = async (data: IDirectCollectedData) : Promise<unknown> => 
 
 
 
-
-
-// timeOrigin: 1604999186880.666,
-// timing: {
-//   connectStart: 1604999186898,
-//   navigationStart: 1604999186880,
-//   loadEventEnd: 1604999190267,
-//   domLoading: 1604999187008,
-//   secureConnectionStart: 1604999186901,
-//   fetchStart: 1604999186880,
-//   domContentLoadedEventStart: 1604999187443,
-//   responseStart: 1604999186996,
-//   responseEnd: 1604999187103,
-//   domInteractive: 1604999187198,
-//   domainLookupEnd: 1604999186898,
-//   redirectStart: 0,
-//   requestStart: 1604999186922,
-//   unloadEventEnd: 0,
-//   unloadEventStart: 0,
-//   domComplete: 1604999190264,
-//   domainLookupStart: 1604999186887,
-//   loadEventStart: 1604999190264,
-//   domContentLoadedEventEnd: 1604999187443,
-//   redirectEnd: 0,
-//   connectEnd: 1604999186921
-// },
-// navigation: { type: 0, redirectCount: 0 }

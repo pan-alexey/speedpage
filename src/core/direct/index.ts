@@ -1,4 +1,4 @@
-import { awaitTimeout } from '../../helpers';
+import { awaitTimeout, sleep } from '../../helpers';
 import { Browser } from '../../service/browser';
 import { logger } from '../../utils/logger';
 import { collector } from '../direct/collector';
@@ -41,6 +41,8 @@ import { IDirectCollectedData } from '../../types';
       const resultMetrics = await metrics(result as IDirectCollectedData);
     
       console.log(resultMetrics);
+
+      await sleep(500);
 
       await browserService.close();
       logger.mark(`end for url: ${url}`);

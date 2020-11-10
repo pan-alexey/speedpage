@@ -4,8 +4,8 @@
 // @ts-nocheck
 
 module.exports = () => {
-  window['$$perfomanse'] = {};
-  window['$$perfomanse'].context = {};
+  window['$$perfomance'] = {};
+  window['$$perfomance'].context = {};
 
   // [FID] - First Input Delay (https://web.dev/fid/)
   (function (context) {
@@ -22,7 +22,7 @@ module.exports = () => {
     document.addEventListener('load', () => {
       observer.disconnect();
     });
-  })(window['$$perfomanse'].context);
+  })(window['$$perfomance'].context);
 
   // [CLS] - Cumulative Layout Shift (https://web.dev/cls/)
   (function (context) {
@@ -41,7 +41,7 @@ module.exports = () => {
     document.addEventListener('visibilitychange', () => {
       observer.disconnect();
     });
-  })(window['$$perfomanse'].context);
+  })(window['$$perfomance'].context);
 
   // [LCP] - Largest Contentful Paint (https://web.dev/lcp/)
   (function (context) {
@@ -58,7 +58,7 @@ module.exports = () => {
     document.addEventListener('visibilitychange', function () {
         observer.disconnect();
     });
-  })(window['$$perfomanse'].context);
+  })(window['$$perfomance'].context);
 
   // [LT] - Long Tasks (https://developer.mozilla.org/en-US/docs/Web/API/Long_Tasks_API)
   (function (context) {
@@ -72,11 +72,11 @@ module.exports = () => {
     document.addEventListener('visibilitychange', function () {
         observer.disconnect();
     });
-  })(window['$$perfomanse'].context);
+  })(window['$$perfomance'].context);
 
 
   // Function for serialize PerformanceObserver data;
-  // $$perfomanse.serialize($$perfomanse.context)
+  // $$perfomance.serialize($$perfomance.context)
   const serialize = (obj: any) => {
     if (obj === null || typeof (obj) != 'object') {
       return obj;
@@ -141,8 +141,8 @@ module.exports = () => {
     }
     return temp;
   };
-  window['$$perfomanse'].serialize = serialize; // for debug;
-  window['$$perfomanse'].toJSON = () => {
-    return serialize(window['$$perfomanse'].context);
+  window['$$perfomance'].serialize = serialize; // for debug;
+  window['$$perfomance'].toJSON = () => {
+    return serialize(window['$$perfomance'].context);
   };
 };
