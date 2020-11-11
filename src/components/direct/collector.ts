@@ -2,20 +2,23 @@ import * as puppeteer from 'puppeteer';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import { IDirectCollectedData, IDirectOptions } from '../../types';
+import { IDirectCollectedData, IDirectOptions } from './types';
 import { logger } from '../../utils/logger';
 import { sleep } from '../../helpers/index';
-import { takeScreenshots } from '../../scripts/collectors/screenshots';
-import { startElapsedTime, stopElapsedTime } from '../../scripts/collectors/elapsed-time';
-import { startWindowMetrics, stopWindowMetrics, showWindowMetrics } from '../../scripts/collectors/window-metrics';
-import { startNetworkEvents, stopNetworkEvents } from '../../scripts/collectors/network';
-import { startTracing, stopTracing } from '../../scripts/collectors/tracing';
-import { pageMetrics } from '../../scripts/collectors/page-metrics';
-import { startCollectPageEvents, stopCollectPageEvents } from '../../scripts/collectors/page-events';
-import { getConent } from '../../scripts/collectors/content';
+import { takeScreenshots } from '../../core/collectors/screenshots';
+import { startElapsedTime, stopElapsedTime } from '../../core/collectors/elapsed-time';
+import { startWindowMetrics, stopWindowMetrics, showWindowMetrics } from '../../core/collectors/window-metrics';
+import { startNetworkEvents, stopNetworkEvents } from '../../core/collectors/network';
+import { startTracing, stopTracing } from '../../core/collectors/tracing';
+import { pageMetrics } from '../../core/collectors/page-metrics';
+import { startCollectPageEvents, stopCollectPageEvents } from '../../core/collectors/page-events';
+import { getConent } from '../../core/collectors/content';
+import { directConfig } from '../../config';
 
-export const collector = async (browser: puppeteer.Browser, options: IDirectOptions): 
+export const collector = async (browser: puppeteer.Browser, directOptions: IDirectOptions): 
 Promise<IDirectCollectedData|null> => {
+  const options = Object.assign(directConfig(directOptions.platform), directOptions);
+
   logger.info(`start direct for url: ${options.url}`);
 
   // context is a mutable object
@@ -34,6 +37,9 @@ Promise<IDirectCollectedData|null> => {
   const client = await page.target().createCDPSession();
   await client.send('Page.enable');
   await client.send('Network.enable');
+
+  client.send('Emulation.clearDeviceMetricsOverride');
+  await page.setViewport(options.viewport);
 
   if (options.clearCache) {
     await client.send('Network.clearBrowserCache');
@@ -101,15 +107,14 @@ Promise<IDirectCollectedData|null> => {
   await stopTracing(page, context, rawDir ? path.resolve(rawDir, 'tracing.json'): null);
   screenshots['screenshot'] = await takeScreenshots(page, outputPath, 'screenshot');
   await pageMetrics(page, context, 'after');
+  await stopNetworkEvents(page, context, rawDir ? path.resolve(rawDir, 'networkEvents.json'): null);
+  await stopCollectPageEvents(page, context, rawDir ? path.resolve(rawDir, 'pageEvents.json'): null);
 
   if (options.enableBrowserPerfomanceApi) {
     await stopWindowMetrics(page, context, rawDir ? path.resolve(rawDir, 'windowMetrics.json'): null); // attention for this collector
   }
 
   await getConent(page, context, rawDir ? path.resolve(rawDir, 'conent.html'): null);
-  await stopNetworkEvents(page, context, rawDir ? path.resolve(rawDir, 'networkEvents.json'): null);
-
-  await stopCollectPageEvents(page, context, rawDir ? path.resolve(rawDir, 'pageEvents.json'): null);
 
   stopElapsedTime(context);
   // console.log(context);

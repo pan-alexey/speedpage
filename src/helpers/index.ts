@@ -5,7 +5,8 @@ export const sleep = (ms: number, arg?: unknown): Promise<unknown> => {
 };
 
 export const awaitTimeout = (callback: Promise<unknown>, timeout = 180000): Promise<{
-  result: unknown, error: unknown
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  result: any, error: any
 }> => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise((resolve) => {

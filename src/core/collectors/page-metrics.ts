@@ -1,5 +1,5 @@
 import { Page } from 'puppeteer';
-import { ICollectData } from '../../types';
+import { ICollectData } from '../../core/types';
 import { logger } from '../../utils/logger';
 
 export const pageMetrics =  async (page: Page, context: ICollectData, key: string): Promise<void> => {

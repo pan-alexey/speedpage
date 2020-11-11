@@ -1,5 +1,5 @@
 import { Page } from 'puppeteer';
-import { ICollectData } from '../../types';
+import { ICollectData } from '../../core/types';
 import * as fs from 'fs';
 import * as SafeJsonStringify from 'safe-json-stringify';
 import { logger } from '../../utils/logger';

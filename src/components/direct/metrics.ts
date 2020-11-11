@@ -1,15 +1,15 @@
-import { IDirectCollectedData } from '../../types';
-import { visualMetrics } from '../../scripts/metrics/visual-metrics';
-import { fidBrowserApi } from '../../scripts/metrics/fid';
-import { clsBrowserApi } from '../../scripts/metrics/cls';
-import { lcpBrowserApi } from '../../scripts/metrics/lcp';
-import { dnsTimeBrowserApi } from '../../scripts/metrics/dns-time';
-import { sslTimeBrowserApi } from '../../scripts/metrics/ssl-time';
-import { tcpTimeBrowserApi } from '../../scripts/metrics/tcp-time';
-import { ttfbBrowserApi } from '../../scripts/metrics/ttfb';
-import { ttlbBrowserApi } from '../../scripts/metrics/ttlb';
-import { redirectCountBrowserApi, redirectTimeBrowserApi } from '../../scripts/metrics/redirect';
-
+import { IDirectCollectedData } from './types';
+import { visualMetrics } from '../../core/metrics/visual-metrics';
+import { fidBrowserApi } from '../../core/metrics/fid';
+import { clsBrowserApi } from '../../core/metrics/cls';
+import { lcpBrowserApi } from '../../core/metrics/lcp';
+import { dnsTimeBrowserApi } from '../../core/metrics/dns-time';
+import { sslTimeBrowserApi } from '../../core/metrics/ssl-time';
+import { tcpTimeBrowserApi } from '../../core/metrics/tcp-time';
+import { ttfbBrowserApi } from '../../core/metrics/ttfb';
+import { ttlbBrowserApi } from '../../core/metrics/ttlb';
+import { redirectCountBrowserApi, redirectTimeBrowserApi } from '../../core/metrics/redirect';
+import { fcp } from '../../core/metrics/paint';
 
 export const metrics = async (data: IDirectCollectedData) : Promise<unknown> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -101,8 +101,13 @@ export const metrics = async (data: IDirectCollectedData) : Promise<unknown> => 
     group: 'browser',
     values: redirectCountBrowserApi(data.browserPerformanceApi.performance),
   });
-  // Check persistends data before return;
 
+  metrics.push({
+    name: 'fcp',
+    group: 'browser',
+    values: fcp(data.browserPerformanceApi.entries),
+  });
+  // Check persistends data before return;
   return metrics;
 };
 

@@ -1,5 +1,5 @@
 import { Page } from 'puppeteer';
-import { ICollectData } from '../../types';
+import { ICollectData } from '../../core/types';
 import { logger } from '../../utils/logger';
 import * as fs from 'fs';
 

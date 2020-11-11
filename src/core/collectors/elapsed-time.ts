@@ -1,5 +1,5 @@
 
-import { ICollectData } from '../../types';
+import { ICollectData } from '../../core/types';
 import { logger } from '../../utils/logger';
 
 export const startElapsedTime = (context: ICollectData): void => {

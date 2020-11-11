@@ -1,20 +1,9 @@
 import * as puppeteer from 'puppeteer';
-
-
-export interface IPageNetworkEvents {
-  method: unknown;
-  params: unknown;
-}
-
-export interface IPageEvents {
-  pageerror: Array<unknown>;
-  response: Array<unknown>;
-  requestfailed: Array<unknown>;
-  console: Array<unknown>;
-}
+import { IPageNetworkEvents, IPageEvents } from '../../core/types';
 
 export interface IDirectOptions {
   url: string;
+  platform?: string,
   tmpDir: string;
   saveRaw?: boolean;
   alias?: string;
@@ -58,5 +47,3 @@ export interface IDirectCollectedData {
   tracing: any;
   content: string;
 }
-
-export type ICollectData = IDirectCollectedData;
